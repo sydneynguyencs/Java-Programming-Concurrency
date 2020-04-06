@@ -1,0 +1,34 @@
+/*
+ *  Dynamic Multi-Module project structure
+ *  automatically adds each exercise as a sub-project (module)
+ */
+
+// use current directory name as root project name
+rootProject.name = file('.').toPath().fileName
+
+// dynamically add sub-projects in handout folder
+File handoutDir = file('handout')
+if (handoutDir.isDirectory()) {
+    handoutDir.eachDir { dir ->
+        String subProjectName = ":${dir.name}"
+        include(subProjectName)
+        project(subProjectName).projectDir = dir
+    }
+}
+
+// dynamically add sub-projects in solution folder
+File solutionDir = file('solution')
+if (solutionDir.isDirectory()) {
+    solutionDir.eachDir { dir ->
+        String subProjectName = ":${dir.name}-sol"
+        include(subProjectName)
+        project(subProjectName).projectDir = dir
+    }
+}
+
+// Example: manually adding sub-project with name == folder
+//include 'module1'
+
+// Example: manually adding sub-projects with different name & folder
+//include(':lab00-module1')
+//project(':lab00-module1').projectDir = file('handout/module1')
