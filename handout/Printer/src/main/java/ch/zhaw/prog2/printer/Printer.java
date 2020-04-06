@@ -8,6 +8,7 @@ public class Printer {
         PrinterThread b = new PrinterThread("PrinterB", '*', 20);
         a.start();
         b.start();
+
         a.terminate();
         b.terminate(); // wie kann das abgefangen werden?
     }
