@@ -13,11 +13,11 @@ public class PriorityTest {
             threads[i].start();
         }
         // wait for some time
-        Thread.sleep(2000);
+        //Thread.sleep(2000);
         // terminate all threads
         for (SimpleThread thread : threads) {
-            // ToDo: Replace the deprecated stop-Method with a proper way to stop the thread.
-            thread.stop();
+            //thread.stop();
+            thread.terminate();
         }
         // print results
         for (SimpleThread thread : threads) {
@@ -30,15 +30,21 @@ public class PriorityTest {
 
     private static class SimpleThread extends Thread {
         long count = 0;
+        volatile boolean doContinue = true;
 
         public SimpleThread(String str) { super(str); }
 
         @Override
         public void run() {
-            while (true) {
+            while (doContinue) {
                 count++;
                 Thread.yield();
             }
+        }
+
+        public void terminate() {
+            doContinue = false;
+            this.interrupt();
         }
     }
 

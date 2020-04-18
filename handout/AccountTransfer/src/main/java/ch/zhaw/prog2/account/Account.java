@@ -1,12 +1,14 @@
 package ch.zhaw.prog2.account;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Account {
     private int id;
-    private int saldo = 0;
+    private AtomicInteger saldo;
 
     public Account(int id, int initialAmount) {
         this.id = id;
-        this.saldo = initialAmount;
+        this.saldo = new AtomicInteger(initialAmount);
     }
 
     public int getId() {
@@ -14,10 +16,10 @@ public class Account {
     }
 
     public int getSaldo() {
-        return saldo;
+        return saldo.get();
     }
 
     public void changeSaldo(int delta) {
-        this.saldo += delta;
+        this.saldo.addAndGet(delta);
     }
 }

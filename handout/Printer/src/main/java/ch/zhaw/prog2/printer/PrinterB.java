@@ -6,12 +6,12 @@ public class PrinterB {
     public static void main(String[] arg) {
         PrinterRunnable a = new PrinterRunnable("PrinterA", '.', 10);
         PrinterRunnable b = new PrinterRunnable("PrinterB", '*', 20);
-        new Thread((Runnable) a).start();
-        new Thread((Runnable) b).start();
+        new Thread(a).start();
+        new Thread(b).start();
     }
 
 
-    private static class PrinterRunnable {
+    public static class PrinterRunnable implements Runnable {
         String name;
         char symbol;
         int sleepTime;
@@ -22,8 +22,9 @@ public class PrinterB {
             this.sleepTime = sleepTime;
         }
 
+        @Override
         public void run() {
-            System.out.println(Thread.currentThread().getName() + " run started...");
+            System.out.println(name + " run started...");
             for (int i = 1; i < 100; i++) {
                 System.out.print(symbol);
                 try {
@@ -32,7 +33,7 @@ public class PrinterB {
                     System.out.println(e.getMessage());
                 }
             }
-            System.out.println('\n' + Thread.currentThread().getName() + " run ended.");
+            System.out.println('\n' + name + " run ended.");
         }
     }
 }

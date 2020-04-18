@@ -8,15 +8,27 @@ class TrafficLight {
     }
 
     public synchronized void passby() {
-        // ToDo: wait as long the light is red
+        // wait as long the light is red
+        while(red) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            switchToGreen();
+        }
     }
 
     public synchronized void switchToRed() {
-        // ToDo: set light to red
+        // set light to red
+        red = true;
     }
 
     public synchronized void switchToGreen() {
-        // Todo: set light to green
+        // set light to green
+        red = false;
         // waiting cars can now pass by
+        notifyAll();
+        //notifyAll() otherwise only one car can pass. Here we want all waiting cars to pass.
     }
 }

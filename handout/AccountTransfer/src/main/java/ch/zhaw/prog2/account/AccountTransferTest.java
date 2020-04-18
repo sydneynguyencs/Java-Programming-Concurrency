@@ -16,7 +16,7 @@ public class AccountTransferTest {
             (account1.getSaldo() + account2.getSaldo() + account3.getSaldo()));
 
         AccountTransferThread t1 =
-            new AccountTransferThread("Worker 1", account3, account1, 1);
+            new AccountTransferThread("Worker 1", account1, account3, 1);
         AccountTransferThread t2 =
             new AccountTransferThread("Worker 2", account3, account2, 2);
         AccountTransferThread t3 =
