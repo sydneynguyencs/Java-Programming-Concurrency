@@ -5,6 +5,15 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/*
+c. Verhindern des Deadlocks über die Nummerierung der Ressourcen:
+    Prevent cyclic waiting condition:
+    Breaking the cycle by making one node (here: Phylosopher) acquiring
+    the left fork first, then the right fork.
+    All other Philosophers try to acquire the right fork first, then the left fork.
+    The idea is based on the lecture slides 06_Concurrency3_Deadlocks on slide 29.
+ */
+
 class PhilosopherTable extends Observable {
     private final int philoCount;
     private final Philosopher[] philosophers;
@@ -76,6 +85,7 @@ class ForkManager {
 
     private Lock mutex;
 
+
     public ForkManager(int nrForks) {
         this.mutex = new ReentrantLock();
         this.nrForks = nrForks;
@@ -84,12 +94,14 @@ class ForkManager {
             forks[i] = new Fork(mutex);
     }
 
+    // need to acquire left and right fork
     public void acquireFork(int i) {
         try {
             mutex.lock();
-            while (forks[i].forkState == ForkState.OCCUPIED)
-                forks[i].cond.await();
-            forks[i].forkState = ForkState.OCCUPIED;
+            while (forks[left(i)].forkState == ForkState.OCCUPIED || forks[right(i)].forkState == ForkState.OCCUPIED)
+                forks[left(i)].cond.await();
+            forks[left(i)].forkState = ForkState.OCCUPIED;
+            forks[right(i)].forkState = ForkState.OCCUPIED;
         } catch (InterruptedException e) {
             System.err.println("Interrupted: " + e.getMessage());
         } finally {
@@ -100,8 +112,10 @@ class ForkManager {
     public void releaseFork(int i) {
         try {
             mutex.lock();
-            forks[i].forkState = ForkState.FREE;
-            forks[i].cond.signal();
+            forks[left(i)].forkState = ForkState.FREE;
+            forks[left(i)].cond.signal();
+            forks[right(i)].forkState = ForkState.FREE;
+            forks[right(i)].cond.signal();
         } finally {
             mutex.unlock();
         }
@@ -177,12 +191,12 @@ class Philosopher extends Thread {
 
         ForkManager mgr = table.getForkManager();
         mgr.acquireFork(id);
-        try {
+        /*try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             System.err.println("Interrupted: " + e.getMessage());
-        }
-        mgr.acquireFork(mgr.right(id));
+        }*/
+       // mgr.acquireFork(mgr.right(id));
     }
 
     private void putForks() {
