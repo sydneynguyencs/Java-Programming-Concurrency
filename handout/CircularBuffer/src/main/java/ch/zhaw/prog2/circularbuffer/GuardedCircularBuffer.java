@@ -2,7 +2,7 @@ package ch.zhaw.prog2.circularbuffer;
 
 /*
  * notifyAll() is used such that all waiting threads will be notified and not only one.
- * notify() will only wake one thread (from waiting into entry room) whick could be
+ * notify() will only wake one thread (from waiting into entry room) which could be
  * problematic in case this thread still has to wait at the same time.
  */
 public class GuardedCircularBuffer<T> implements Buffer<T> {

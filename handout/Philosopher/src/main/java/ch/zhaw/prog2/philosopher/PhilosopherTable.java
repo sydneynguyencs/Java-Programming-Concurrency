@@ -6,6 +6,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /*
+a. deadlock through cyclic waiting condition. reduce waiting time to get faster deadlock.
 c. Verhindern des Deadlocks über die Nummerierung der Ressourcen:
     Prevent cyclic waiting condition:
     Breaking the cycle by making one node (here: Phylosopher) acquiring

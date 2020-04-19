@@ -1,0 +1,14 @@
+2.3.
+a.
+ * notifyAll() is used such that all waiting threads will be notified and not only one.
+ * notify() will only wake one thread (from waiting into entry room) whick could be
+ * problematic in case this thread still has to wait at the same time.
+
+3.2.
+a. deadlock through cyclic waiting condition. reduce waiting time to get faster deadlock.
+c. Verhindern des Deadlocks über die Nummerierung der Ressourcen:
+    Prevent cyclic waiting condition:
+    Breaking the cycle by making one node (here: Phylosopher) acquiring
+    the left fork first, then the right fork.
+    All other Philosophers try to acquire the right fork first, then the left fork.
+    The idea is based on the lecture slides 06_Concurrency3_Deadlocks on slide 29.

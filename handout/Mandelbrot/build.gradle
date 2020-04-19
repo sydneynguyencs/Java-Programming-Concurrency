@@ -20,7 +20,7 @@ dependencies {
 // Configuration for Application plugin
 application {
     // Define the main class for the application.
-    mainClassName = 'ch.zhaw.prog2.mandelbrot.MandelbrotHandout'
+    mainClassName = 'ch.zhaw.prog2.mandelbrot.MandelbrotExecutor'
 }
 
 // Configuration for JavaFX plugin
